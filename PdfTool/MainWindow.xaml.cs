@@ -12,6 +12,8 @@ namespace PdfTool;
 
 public partial class MainWindow : Window {
     private const int A4Size = 842;
+    private HashSet<string> _imageExtensions;
+    private HashSet<string> _pdf;
 
     public MainWindow() {
         InitializeComponent();
@@ -19,10 +21,21 @@ public partial class MainWindow : Window {
         var provider = CodePagesEncodingProvider.Instance;
 
         Encoding.RegisterProvider(provider);
+
+        _imageExtensions = new HashSet<string>() {
+            ".jpeg", ".jpg", ".png"
+        };
+
+        _pdf = new HashSet<string>() {
+            ".pdf"
+        };
     }
 
     private void MergeFiles(IDataObject dataObject) {
+        Status.Collapse();
+
         if (!dataObject.GetDataPresent(DataFormats.FileDrop)) {
+            Status.Update("File drop has no data!", false);
             return;
         }
 
@@ -30,6 +43,12 @@ public partial class MainWindow : Window {
         string[] filePaths = (string[])dataObject.GetData(DataFormats.FileDrop);
 
         if (filePaths.Length == 0) {
+            Status.Update("No files were found!", false);
+            return;
+        }
+
+        if (!ExtensionsValid(ref filePaths, ref _pdf)) {
+            Status.Update("Selected files are invalid!", false);
             return;
         }
 
@@ -41,10 +60,6 @@ public partial class MainWindow : Window {
         document.Info.Title = fileName;
 
         foreach (string path in filePaths) {
-            if (!path.EndsWith(".pdf")) {
-                continue;
-            }
-
             PdfDocument inputDocument = PdfReader.Open(path, PdfDocumentOpenMode.Import);
 
             foreach (var page in inputDocument.Pages) {
@@ -53,16 +68,20 @@ public partial class MainWindow : Window {
         }
 
         if (document.PageCount == 0) {
-            Alert("Error", "Document processing failed!");
+            Status.Update("Document processing failed!", false);
             return;
         }
 
         document.Save(outputPath);
-        Alert("Success", "Merge successful.");
+
+        Status.Update("Merge successful.", true);
     }
 
     private void ConvertImages(IDataObject dataObject) {
+        Status.Collapse();
+
         if (!dataObject.GetDataPresent(DataFormats.FileDrop)) {
+            Status.Update("File drop has no data!", false);
             return;
         }
 
@@ -70,14 +89,16 @@ public partial class MainWindow : Window {
         string[] filePaths = (string[])dataObject.GetData(DataFormats.FileDrop);
 
         if (filePaths.Length == 0) {
+            Status.Update("No files were found!", false);
+            return;
+        }
+
+        if (!ExtensionsValid(ref filePaths, ref _imageExtensions)) {
+            Status.Update("Selected files are invalid!", false);
             return;
         }
 
         foreach (string path in filePaths) {
-            if (!(path.EndsWith(".jpg") || path.EndsWith(".png"))) {
-                continue;
-            }
-
             PdfDocument documents = new PdfDocument();
             documents.Info.Title = Path.GetFileNameWithoutExtension(path);
 
@@ -95,7 +116,7 @@ public partial class MainWindow : Window {
             if (documents.PageCount > 0) documents.Save(resultPath);
         }
 
-        Alert("Success", "Conversion successful.");
+        Status.Update("Conversion successful.", true);
     }
 
     private void DrawImage(XGraphics gfx, string imagePath, int x, int y, int width, int height) {
@@ -111,8 +132,6 @@ public partial class MainWindow : Window {
             gfx.DrawImage(image, x, y, width, height);
         }
     }
-
-    private static void Alert(string Title, string Message) => MessageBox.Show(Message, Title, MessageBoxButton.OK);
 
     private void MergeBorder_Drop(object sender, DragEventArgs e) {
         MergeFiles(e.Data);
@@ -136,6 +155,16 @@ public partial class MainWindow : Window {
             return;
         }
         border.Background = Brushes.Lavender;
+    }
+
+    private static bool ExtensionsValid(ref string[] files, ref HashSet<string> extensions) {
+        foreach (var file in files) {
+            var ext = Path.GetExtension(file);
+            if (!extensions.Contains(ext)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private string ForceFileName() => string.IsNullOrWhiteSpace(TxtMergedFileName.Text) ? "Merged" : TxtMergedFileName.Text;
