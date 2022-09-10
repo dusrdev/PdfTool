@@ -3,28 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:hc="https://handyorg.github.io/handycontrol"
-        xmlns:local="clr-namespace:ImageToPdf"
         mc:Ignorable="d"
         Title="ImageToPdf - By David Shnayder"
-        ResizeMode="NoResize"
-        Height="540" Width="540">
+        ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
+        Height="250" Width="500">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <ListBox x:Name="LstFiles" Grid.Row="0" Margin="2.5" DragDrop.Drop="LstFiles_Drop"
-                 Background="GhostWhite" AlternationCount="2"/>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="StatusText" Grid.Column="0" Margin="2.5" Style="{StaticResource TextBlockDefaultPrimary}"
-                       Text="Drop Files Above" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Button x:Name="BtnConvert" MinWidth="100" Content="Convert" Margin="2.5"
-                    Style="{StaticResource ButtonPrimary}" Grid.Column="1" Click="BtnConvert_Click"/>
-        </Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border x:Name="MergeBorder" Grid.Column="0" Style="{StaticResource DropBorder}" DragDrop.Drop="MergeBorder_Drop"
+                DragEnter="OnDragEnter" DragLeave="OnDragLeave">
+            <TextBlock Text="Merge Files" Style="{StaticResource Title}"/>
+        </Border>
+        <Border x:Name="ConvertBorder" Grid.Column="1" Style="{StaticResource DropBorder}" DragDrop.Drop="ConvertBorder_Drop"
+                DragEnter="OnDragEnter" DragLeave="OnDragLeave">
+            <TextBlock Text="Convert Images" Style="{StaticResource Title}"/>
+        </Border>
     </Grid>
 </Window>
