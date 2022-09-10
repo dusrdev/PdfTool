@@ -165,12 +165,13 @@ public partial class MainWindow : Window {
             else {
                 var inner = image.PixelWidth / (double)image.PixelHeight * A4Area;
                 var Width = Math.Sqrt(inner);
+                var Height = Width * image.PixelHeight / image.PixelWidth;
                 var ScaledMargin = isVertical ? A4Width : A4Height;
                 if (Width > ScaledMargin) {
                     var ratio = Width / ScaledMargin;
                     Width /= ratio;
+                    Height /= ratio;
                 }
-                var Height = A4Area / Width;
                 gfx.DrawImage(image, x, y, (int)Width, (int)Height);//scale to A4
             }
         } else {
