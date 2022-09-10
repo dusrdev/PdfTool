@@ -6,10 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ImageToPdf {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+namespace PdfTool {
     public partial class App : Application {
     }
 }
