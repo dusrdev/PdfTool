@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:local="clr-namespace:ImageToPdf"
         mc:Ignorable="d"
         Title="ImageToPdf - By David Shnayder"
@@ -13,14 +14,17 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Border x:Name="BorderDrop" Margin="5" CornerRadius="5" Background="LightGray" Grid.Row="0" DragDrop.Drop="BorderDrop_Drop"/>
+        <ListBox x:Name="LstFiles" Grid.Row="0" Margin="2.5" DragDrop.Drop="LstFiles_Drop"
+                 Background="GhostWhite" AlternationCount="2"/>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <ProgressBar Grid.Column="0"/>
-            <Button Content="Save" Grid.Column="1"/>
+            <TextBlock x:Name="StatusText" Grid.Column="0" Margin="2.5" Style="{StaticResource TextBlockDefaultPrimary}"
+                       Text="Drop Files Above" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button x:Name="BtnConvert" MinWidth="100" Content="Convert" Margin="2.5"
+                    Style="{StaticResource ButtonPrimary}" Grid.Column="1" Click="BtnConvert_Click"/>
         </Grid>
     </Grid>
 </Window>
