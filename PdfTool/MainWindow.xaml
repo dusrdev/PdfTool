@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PdfTool.Controls"
         mc:Ignorable="d"
-        Title="PdfTool - © 2022 David Shnayder."
+        Title="PdfTool © 2022 David Shnayder"
         ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
         Height="350" Width="600">
     <Grid>

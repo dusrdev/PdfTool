@@ -8,6 +8,8 @@
     <ApplicationIcon>Resources\Images\appicon.ico</ApplicationIcon>
     <ImplicitUsings>enable</ImplicitUsings>
     <Authors>David Shnayder</Authors>
+    <Copyright>2022, David Shnayder</Copyright>
+    <Description>Simple tools that converts images to pdfs or merges multiple pdf files into one</Description>
   </PropertyGroup>
 
   <ItemGroup>
