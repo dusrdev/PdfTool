@@ -40,7 +40,7 @@ public partial class MainWindow : Window {
     private async Task MergeFiles(IDataObject dataObject) {
         if (!dataObject.GetDataPresent(DataFormats.FileDrop)) {
             Status.Update("File drop has no data!", false);
-            await CollapseStatus();
+            _ = CollapseStatus();
             return;
         }
 
@@ -49,13 +49,13 @@ public partial class MainWindow : Window {
 
         if (filePaths.Length == 0) {
             Status.Update("No files were found!", false);
-            await CollapseStatus();
+            _ = CollapseStatus();
             return;
         }
 
         if (!ExtensionsValid(ref filePaths, ref _pdf)) {
             Status.Update("Selected files are invalid!", false);
-            await CollapseStatus();
+            _ = CollapseStatus();
             return;
         }
 
@@ -91,7 +91,7 @@ public partial class MainWindow : Window {
         document.Save(outputPath);
 
         Status.Update("Merge successful.", true);
-        await CollapseStatus();
+        _ = CollapseStatus();
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public partial class MainWindow : Window {
     private async Task ConvertImages(IDataObject dataObject) {
         if (!dataObject.GetDataPresent(DataFormats.FileDrop)) {
             Status.Update("File drop has no data!", false);
-            await CollapseStatus();
+            _ = CollapseStatus();
             return;
         }
 
@@ -110,13 +110,13 @@ public partial class MainWindow : Window {
 
         if (filePaths.Length == 0) {
             Status.Update("No files were found!", false);
-            await CollapseStatus();
+            _ = CollapseStatus();
             return;
         }
 
         if (!ExtensionsValid(ref filePaths, ref _imageExtensions)) {
             Status.Update("Selected files are invalid!", false);
-            await CollapseStatus();
+            _ = CollapseStatus();
             return;
         }
 
@@ -145,7 +145,7 @@ public partial class MainWindow : Window {
         }
 
         Status.Update("Conversion successful.", true);
-        await CollapseStatus();
+        _ = CollapseStatus();
     }
 
     /// <summary>
