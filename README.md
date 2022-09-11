@@ -14,8 +14,8 @@ A: This application is written and .NET 6 and all the dependencies are .NET CORE
 
 Q: I want to be able to use it on computers without the need to download .Net runtime dependencies, is it possible?
 
-A: Yes, but not with the executable from [Releases](https://github.com/dusrdev/PdfTool/releases), you will need to download the source code, and re-build it as a Self-Contained executable. I did not do it because the output file is much bigger and most pc's already have .NET runtime installed from other programs
+A: Yes, download the "self-contained" from [Releases](https://github.com/dusrdev/PdfTool/releases), extract it a new folder, and create a shortcut for the executable or launch directly from said folder.
 
 ## Installation
 
-This application is made to be extremely portable thus it is compiled to be a single file executable, all you need is to download the latest version from [Releases](https://github.com/dusrdev/PdfTool/releases) and run it
+This application is made to be extremely portable thus it is compiled to be a single file executable, all you need is to download the latest version from [Releases](https://github.com/dusrdev/PdfTool/releases) and run it, if the client pc has no archive extractor, you can also download the .exe version
