@@ -4,6 +4,10 @@ This is a very simple portable application that allows the user to either conver
 
 ## FAQ
 
+Q: What happens to documents I process with this application? are they uploaded to some server? What is the privacy policy?
+
+A: The application does all the processing on the client computer without any connections to the internet, as a matter of fact, it can work offline just the same. Thus making it completely private and anonymous. There are no data collections whatsoever, no metrics, no user info, no nothing.
+
 Q: Will I add options?
 
 A: Probably not this was made as a very simple solution to a specific problem
