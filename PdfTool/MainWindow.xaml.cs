@@ -3,9 +3,9 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
+using PdfSharpCore.Pdf.IO;
 
 namespace PdfTool;
 
@@ -128,7 +128,7 @@ public partial class MainWindow : Window {
             PdfPage page = documents.AddPage();
             XImage image = XImage.FromFile(path);
             if (image.PixelWidth > image.PixelHeight) {
-                page.Orientation = PdfSharp.PageOrientation.Landscape;
+                page.Orientation = PdfSharpCore.PageOrientation.Landscape;
                 isVertical = false;
             }
             XGraphics gfx = XGraphics.FromPdfPage(page);
@@ -160,9 +160,9 @@ public partial class MainWindow : Window {
     /// <param name="height"></param>
     private Task DrawImage(XGraphics gfx, XImage image, bool isVertical, int x, int y, int width, int height) {
         if (BtnMaintainAspectRatio.IsChecked) {
-            if (image.PixelHeight <= A4Height && image.PixelWidth <= A4Width) //A4 height and width
+            if (image.PixelHeight <= A4Height && image.PixelWidth <= A4Width) { //A4 height and width
                 gfx.DrawImage(image, x, y); // don't scale
-            else {
+            } else {
                 var inner = image.PixelWidth / (double)image.PixelHeight * A4Area;
                 var Width = Math.Sqrt(inner);
                 var Height = Width * image.PixelHeight / image.PixelWidth;
@@ -171,6 +171,13 @@ public partial class MainWindow : Window {
                     var ratio = Width / ScaledMargin;
                     Width /= ratio;
                     Height /= ratio;
+                }
+                if (isVertical) {
+                    x += (int)((A4Width - Width) / 2);
+                    y += (int)((A4Height - Height) / 2);
+                } else {
+                    x += (int)((A4Height - Width) / 2);
+                    y += (int)((A4Width - Height) / 2);
                 }
                 gfx.DrawImage(image, x, y, (int)Width, (int)Height);//scale to A4
             }
