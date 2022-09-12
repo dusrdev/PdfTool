@@ -27,6 +27,7 @@ There's a bix box to which you drag single or multiple pictures to convert all o
 * You can toggle whether to maintain aspect ratio or not, the default is on. If you maintain aspect ratio, the image will be scaled to fit inside the .pdf page (A4 size) and be centered. If you toggle this option off, the image will be stretched to fill a .pdf page (also A4 size)
 
 * If the image is wider than it is high, the page will automatically be rotated to landscape orientation.
+* Supported image formats are [.jpeg, .jpg, .png, .tif, .tiff]
 
 ## FAQ
 
