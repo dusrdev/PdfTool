@@ -10,6 +10,8 @@ This led me to create this application, where safety, ease of use, portability a
 
 ## Screenshots and usage
 
+![PdfTool Screenshot](https://user-images.githubusercontent.com/8972626/189625466-5d0bb940-e631-42f1-82f7-bf62a3a23506.png)
+
 As you can see here, the application is very simple.
 
 ### Left side
