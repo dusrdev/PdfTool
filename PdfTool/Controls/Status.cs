@@ -4,12 +4,13 @@ using System.Windows.Media;
 
 namespace PdfTool.Controls;
 
-public class Status : Border
-{
-    private TextBlock _textBlock;
+public class Status : Border {
+    private readonly TextBlock _textBlock;
+    public TimeSpan CollapseDelay { get; set; }
 
     public Status() {
         Collapse();
+        CollapseDelay = TimeSpan.FromSeconds(3);
         _textBlock = new TextBlock {
             FontWeight = FontWeights.SemiBold
         };
@@ -17,6 +18,11 @@ public class Status : Border
     }
 
     public void Collapse() => Visibility = Visibility.Collapsed;
+
+    public async Task DelayCollapse() {
+        await Task.Delay(CollapseDelay);
+        Collapse();
+    }
 
     public void Update(string status, bool isSuccess) {
         if (Visibility is Visibility.Collapsed) {
@@ -29,5 +35,7 @@ public class Status : Border
             true => Brushes.SpringGreen,
             _ => Brushes.Crimson
         };
+
+        _ = DelayCollapse();
     }
 }

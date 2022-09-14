@@ -1,6 +1,9 @@
-﻿using PdfSharpCore.Drawing;
-
+﻿using System.IO;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Pdf;
 using PdfTool.Models;
+using PdfSharpCore;
+using System.Text;
 
 namespace PdfTool.Controller;
 
@@ -12,10 +15,44 @@ internal sealed class ImageToPdfConverter {
 
     public ImageToPdfConverter(AppSettings settings) {
         _settings = settings;
+        var provider = CodePagesEncodingProvider.Instance;
+        Encoding.RegisterProvider(provider);
     }
 
-    public async Task<Result> ConvertImagesAsync(IEnumerable<string> filePaths) {
+    /// <summary>
+    /// Batch converts images to pdfs and saves them to the same directory as the first file
+    /// </summary>
+    /// <param name="filePaths"></param>
+    /// <returns></returns>
+    public async Task<Result> ConvertImagesAsync(string[] filePaths) {
+        foreach (string path in filePaths) {
+            PdfDocument documents = new PdfDocument();
+            documents.Info.Title = Path.GetFileNameWithoutExtension(path);
 
+            var isVertical = true;
+            PdfPage page = documents.AddPage();
+            XImage image = XImage.FromFile(path);
+            if (image.PixelWidth > image.PixelHeight) {
+                page.Orientation = PageOrientation.Landscape;
+                isVertical = false;
+            }
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            await DrawImage(gfx, image, isVertical, 0, 0, (int)page.Width, (int)page.Height);
+
+            string resultPath = Path.ChangeExtension(path, ".pdf");
+
+            if (File.Exists(resultPath)) {
+                File.Delete(resultPath);
+            }
+
+            if (documents.PageCount > 0) documents.Save(resultPath);
+        }
+
+        return new Result {
+            Success = true,
+            Message = "Conversion successful."
+        };
     }
 
     /// <summary>
@@ -34,26 +71,28 @@ internal sealed class ImageToPdfConverter {
             return Task.CompletedTask;
         }
         
-        if (image.PixelHeight <= _settings.PageSize.Height && image.PixelWidth <= _settings.PageSize.Width) { //A4 height and width
+        if (image.PixelHeight <= height && image.PixelWidth <= width) { //A4 height and width
             gfx.DrawImage(image, x, y); // don't scale
             return Task.CompletedTask;
         }
 
-        var inner = image.PixelWidth / (double)image.PixelHeight * _settings.PageSize.Area;
+        var area = width * height;
+
+        var inner = image.PixelWidth / (double)image.PixelHeight * area;
         var Width = Math.Sqrt(inner);
         var Height = Width * image.PixelHeight / image.PixelWidth;
-        var ScaledMargin = isVertical ? _settings.PageSize.Width : _settings.PageSize.Height;
+        var ScaledMargin = isVertical ? width : height;
         if (Width > ScaledMargin) {
             var ratio = Width / ScaledMargin;
             Width /= ratio;
             Height /= ratio;
         }
         if (isVertical) {
-            x += (int)((_settings.PageSize.Width - Width) / 2);
-            y += (int)((_settings.PageSize.Height - Height) / 2);
+            x += (int)((width - Width) / 2);
+            y += (int)((height - Height) / 2);
         } else {
-            x += (int)((_settings.PageSize.Height - Width) / 2);
-            y += (int)((_settings.PageSize.Width - Height) / 2);
+            x += (int)((height - Width) / 2);
+            y += (int)((width - Height) / 2);
         }
         gfx.DrawImage(image, x, y, (int)Width, (int)Height);//scale to A4
         return Task.CompletedTask;
