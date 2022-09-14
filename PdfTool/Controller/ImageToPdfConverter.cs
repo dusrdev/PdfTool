@@ -29,16 +29,14 @@ internal sealed class ImageToPdfConverter {
             PdfDocument documents = new PdfDocument();
             documents.Info.Title = Path.GetFileNameWithoutExtension(path);
 
-            var isVertical = true;
             PdfPage page = documents.AddPage();
             XImage image = XImage.FromFile(path);
             if (image.PixelWidth > image.PixelHeight) {
                 page.Orientation = PageOrientation.Landscape;
-                isVertical = false;
             }
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
-            await DrawImage(gfx, image, isVertical, 0, 0, (int)page.Width, (int)page.Height);
+            await DrawImage(gfx, image, 0, 0, (int)page.Width, (int)page.Height);
 
             string resultPath = Path.ChangeExtension(path, ".pdf");
 
@@ -65,14 +63,9 @@ internal sealed class ImageToPdfConverter {
     /// <param name="y"></param>
     /// <param name="width"></param>
     /// <param name="height"></param>
-    private Task DrawImage(XGraphics gfx, XImage image, bool isVertical, int x, int y, int width, int height) {
+    private Task DrawImage(XGraphics gfx, XImage image, int x, int y, int width, int height) {
         if (!_settings.MaintainAspectRatio) {
             gfx.DrawImage(image, x, y, width, height);
-            return Task.CompletedTask;
-        }
-        
-        if (image.PixelHeight <= height && image.PixelWidth <= width) { //A4 height and width
-            gfx.DrawImage(image, x, y); // don't scale
             return Task.CompletedTask;
         }
 
@@ -81,19 +74,21 @@ internal sealed class ImageToPdfConverter {
         var inner = image.PixelWidth / (double)image.PixelHeight * area;
         var Width = Math.Sqrt(inner);
         var Height = Width * image.PixelHeight / image.PixelWidth;
-        var ScaledMargin = isVertical ? width : height;
-        if (Width > ScaledMargin) {
-            var ratio = Width / ScaledMargin;
+        
+        if (Width > width) {
+            var ratio = Width / width;
             Width /= ratio;
             Height /= ratio;
         }
-        if (isVertical) {
-            x += (int)((width - Width) / 2);
+        
+        if (Height < height) {
             y += (int)((height - Height) / 2);
-        } else {
-            x += (int)((height - Width) / 2);
-            y += (int)((width - Height) / 2);
         }
+        
+        if (Width < width) {
+            x += (int)((width - Width) / 2);
+        }
+        
         gfx.DrawImage(image, x, y, (int)Width, (int)Height);//scale to A4
         return Task.CompletedTask;
     }

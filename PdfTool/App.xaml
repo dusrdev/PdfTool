@@ -78,7 +78,7 @@
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="HorizontalContentAlignment" Value="Center" />
                 <Setter Property="VerticalContentAlignment" Value="Center" />
-                <Setter Property="Height" Value="25"/>
+                <Setter Property="Height" Value="20"/>
                 <Setter Property="Padding" Value="0" />
                 <Setter Property="Template">
                     <Setter.Value>

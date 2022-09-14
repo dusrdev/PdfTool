@@ -82,8 +82,5 @@ public partial class MainWindow : Window {
         border.Background = Brushes.Lavender;
     }
 
-    private void BtnMaintainAspectRatio_Click(object sender, RoutedEventArgs e) {
-        _settings.MaintainAspectRatio = BtnMaintainAspectRatio.IsChecked;
-        MessageBox.Show(_settings.MaintainAspectRatio.ToString());
-    }
+    private void BtnMaintainAspectRatio_Click(object sender, RoutedEventArgs e) => _settings.MaintainAspectRatio = BtnMaintainAspectRatio.IsChecked;
 }

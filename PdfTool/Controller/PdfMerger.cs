@@ -36,12 +36,6 @@ internal sealed class PdfMerger {
         var filePath = Path.Combine(directory!, newFileName);
         var outputPath = Path.ChangeExtension(filePath, ".pdf");
 
-        if (File.Exists(outputPath)) {
-            fileName += "(1)";
-            filePath = Path.Combine(directory!, fileName);
-            outputPath = Path.ChangeExtension(filePath, ".pdf");
-        }
-
         PdfDocument document = new PdfDocument();
         document.Info.Title = fileName;
 
@@ -91,6 +85,6 @@ internal sealed class PdfMerger {
         }
 
         var timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-        return Task.FromResult($"{fileName}-({timeStamp})");
+        return Task.FromResult($"{fileName}-{timeStamp}");
     }
 }
