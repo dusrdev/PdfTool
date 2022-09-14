@@ -18,7 +18,7 @@ As you can see here, the application is very simple.
 
 There's a big box to which you drag multiple pdf files (together) to merge them.
 
-* You can select a desired merged file name, if this name is empty the created file will be name `merged.pdf`, if a file by the selected name already exists, the new file will append `(1)` to the name.
+* You can select a desired merged file name, if this name is empty the created file will be name `merged.pdf`, if a file by the selected name already exists, the new file will append a `TimeStamp` to the name.
 
 * The output file will be saved in the location of the first of the selected files, in order to make sure you know where it is, it is recommended that all of your selected files will be in the same location (directory).
 
