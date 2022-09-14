@@ -10,6 +10,7 @@
     <Authors>David Shnayder</Authors>
     <Copyright>2022, David Shnayder</Copyright>
     <Description>Simple tools that converts images to pdfs or merges multiple pdf files into one</Description>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
