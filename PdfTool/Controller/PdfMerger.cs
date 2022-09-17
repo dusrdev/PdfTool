@@ -36,11 +36,11 @@ internal sealed class PdfMerger {
         var filePath = Path.Combine(directory!, newFileName);
         var outputPath = Path.ChangeExtension(filePath, ".pdf");
 
-        PdfDocument document = new PdfDocument();
+        using var document = new PdfDocument();
         document.Info.Title = fileName;
 
         foreach (string path in filePaths) {
-            PdfDocument inputDocument = PdfReader.Open(path, PdfDocumentOpenMode.Import);
+            using var inputDocument = PdfReader.Open(path, PdfDocumentOpenMode.Import);
 
             foreach (var page in inputDocument.Pages) {
                 document.AddPage(page);
