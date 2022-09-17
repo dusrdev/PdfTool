@@ -26,7 +26,7 @@ internal static class FileValidators {
             if (!extensions.Contains(extension)) {
                 return new Result {
                     Success = false,
-                    Message = "At least one file has an invalid extension."
+                    Message = "At least one file has an unsupported extension."
                 };
             }
         }
