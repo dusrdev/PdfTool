@@ -22,7 +22,7 @@ There's a big box to which you drag multiple pdf files (together) to merge them.
 
 * The output file will be saved in the location of the first of the selected files, in order to make sure you know where it is, it is recommended that all of your selected files will be in the same location (directory).
 
-### Right size
+### Right side
 
 There's a bix box to which you drag single or multiple pictures to convert all of them to .pdf's, each file will have a separate .pdf file of the same name, only the extension will be changed.
 
