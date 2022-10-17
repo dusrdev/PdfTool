@@ -11,6 +11,7 @@ namespace PdfTool;
 public partial class MainWindow : Window {
     private readonly ImageToPdfConverter _imageConverter;
     private readonly PdfMerger _merger;
+    private readonly PdfSplitter _splitter;
     private readonly AppSettings _settings;
 
     public MainWindow() {
@@ -18,23 +19,27 @@ public partial class MainWindow : Window {
         _settings = new AppSettings();
         _imageConverter = new ImageToPdfConverter(_settings);
         _merger = new PdfMerger(_settings);
+        _splitter = new PdfSplitter();
     }
 
     /// <summary>
     /// Merges multiple files to one file
     /// </summary>
     /// <param name="dataObject"></param>
-    private async Task MergeFiles(IDataObject dataObject) {
+    private async Task InvokePdfAction(IDataObject dataObject) {
         string[] filePaths = (string[])dataObject.GetData(DataFormats.FileDrop);
 
         var validation = FileValidators.AreFilesValid(ref filePaths, SupportedExtensions.Pdf);
-        
+
         if (!validation.Success) {
             Status.Update(validation.Message, false);
             return;
         }
 
-        var result = await _merger.MergeDocumentsAsync(filePaths, TxtMergedFileName.Text);
+        var result = _settings.Action switch {
+            PdfAction.Merge => await _merger.MergeDocumentsAsync(filePaths, TxtMergedFileName.Text),
+            _ => await _splitter.SplitPdfAsync(filePaths)
+        };
 
         Status.Update(result.Message, result.Success);
     }
@@ -58,8 +63,8 @@ public partial class MainWindow : Window {
         Status.Update(result.Message, result.Success);
     }
 
-    private async void MergeBorder_Drop(object sender, DragEventArgs e) {
-        await MergeFiles(e.Data);
+    private async void PdfActionBorder_Drop(object sender, DragEventArgs e) {
+        await InvokePdfAction(e.Data);
         OnDragLeave(sender, e);
     }
 
@@ -82,5 +87,15 @@ public partial class MainWindow : Window {
         border.Background = Brushes.Lavender;
     }
 
-    private void BtnMaintainAspectRatio_Click(object sender, RoutedEventArgs e) => _settings.MaintainAspectRatio = BtnMaintainAspectRatio.IsChecked;
+    private void SliderMode_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+        _settings.Action = (PdfAction)(int)SliderMode.Value;
+        TxtPdfAction.Text = _settings.Action switch {
+            PdfAction.Merge => "Merge Pdfs",
+            _ => "Split Pdf"
+        };
+    }
+
+    private void SliderImageConvertMode_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
+        _settings.ConversionMode = (ImageConversionMode)(int)SliderMode.Value;
+    }
 }

@@ -1,6 +1,6 @@
 ﻿namespace PdfTool.Models;
 
-// <summary>
+/// <summary>
 /// A result container with message and status
 /// </summary>
 /// <typeparam name="T">Type of inner value</typeparam>

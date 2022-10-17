@@ -28,7 +28,6 @@ internal sealed class PdfMerger {
     /// </summary>
     /// <param name="filePaths"></param>
     /// <param name="requestedFileName"></param>
-    /// <returns></returns>
     public async Task<Result> MergeDocumentsAsync(string[] filePaths, string requestedFileName) {
         var directory = Path.GetDirectoryName(filePaths[0]);
         var fileName = GetFileName(requestedFileName);

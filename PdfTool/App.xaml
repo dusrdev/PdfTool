@@ -73,6 +73,16 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style TargetType="Slider">
+                <Setter Property="IsSnapToTickEnabled" Value="True"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderBrush" Value="DarkGray"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="TickPlacement" Value="TopLeft"/>
+                <Setter Property="Foreground" Value="Navy"/>
+            </Style>
             <Style TargetType="local:Switch">
                 <Setter Property="Content" Value=""/>
                 <Setter Property="BorderThickness" Value="1"/>

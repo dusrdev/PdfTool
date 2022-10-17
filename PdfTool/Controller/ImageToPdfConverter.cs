@@ -13,6 +13,7 @@ namespace PdfTool.Controller;
 /// </summary>
 internal sealed class ImageToPdfConverter {
     private readonly AppSettings _settings;
+    private static Func<PdfPage, XImage, Task>? _selectedConverter;
 
     public ImageToPdfConverter(AppSettings settings) {
         _settings = settings;
@@ -24,8 +25,12 @@ internal sealed class ImageToPdfConverter {
     /// Batch converts images to pdfs and saves them to the same directory as the first file
     /// </summary>
     /// <param name="filePaths"></param>
-    /// <returns></returns>
     public async Task<Result> ConvertImagesAsync(string[] filePaths) {
+        _selectedConverter = _settings.ConversionMode switch {
+            ImageConversionMode.Full => DrawImageFull,
+            _ => DrawImageFit
+        };
+
         var tasks = filePaths.Select(x => new Func<Task>(() => ConvertImageAsync(x)));
         await tasks.ParallelForEachAsync(-1, async func => await func());
 
@@ -41,12 +46,8 @@ internal sealed class ImageToPdfConverter {
 
         var page = document.AddPage();
         using var image = XImage.FromFile(imagePath);
-        if (image.PixelWidth > image.PixelHeight) {
-            page.Orientation = PageOrientation.Landscape;
-        }
-        using var gfx = XGraphics.FromPdfPage(page);
 
-        await DrawImage(gfx, image, 0, 0, (int)page.Width, (int)page.Height);
+        await _selectedConverter!.Invoke(page, image);
 
         string resultPath = Path.ChangeExtension(imagePath, ".pdf");
 
@@ -60,46 +61,54 @@ internal sealed class ImageToPdfConverter {
     /// <summary>
     /// Draws image to pdf page
     /// </summary>
-    /// <param name="gfx"></param>
     /// <param name="image"></param>
-    /// <param name="isVertical"></param>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <param name="width"></param>
-    /// <param name="height"></param>
-    private Task DrawImage(XGraphics gfx, XImage image, int x, int y, int width, int height) {
-        if (!_settings.MaintainAspectRatio) {
-            gfx.DrawImage(image, x, y, width, height);
-            return Task.CompletedTask;
+    private Task DrawImageFit(PdfPage page, XImage image) {
+        if (image.PixelWidth > image.PixelHeight) {
+            page.Orientation = PageOrientation.Landscape;
         }
+        using var gfx = XGraphics.FromPdfPage(page);
 
-        var area = width * height;
+        int x = 0, y = 0;
+
+        var area = page.Width * page.Height;
 
         var inner = image.PixelWidth / (double)image.PixelHeight * area;
         var Width = Math.Sqrt(inner);
         //var Height = Width * height / width;
         var Height = Width * image.PixelHeight / image.PixelWidth;
 
-        if (Width > width) {
-            var ratio = Width / width;
+        if (Width > page.Width) {
+            var ratio = Width / page.Width;
             Width /= ratio;
             Height /= ratio;
         }
 
-        if (Height > height) {
-            var ratio = Height / height;
+        if (Height > page.Height) {
+            var ratio = Height / page.Height;
             Height /= ratio;
         }
 
-        if (Height < height) {
-            y += (int)((height - Height) / 2);
+        if (Height < page.Height) {
+            y += (int)((page.Height - Height) / 2);
         }
 
-        if (Width < width) {
-            x += (int)((width - Width) / 2);
+        if (Width < page.Width) {
+            x += (int)((page.Width - Width) / 2);
         }
 
         gfx.DrawImage(image, x, y, (int)Width, (int)Height);//scale to A4
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Draws image to pdf page
+    /// </summary>
+    /// <param name="image"></param>
+    private Task DrawImageFull(PdfPage page, XImage image) {
+        page.Width = image.PixelWidth;
+        page.Height = image.PixelHeight;
+        using var gfx = XGraphics.FromPdfPage(page);
+        gfx.DrawImage(image, 0, 0, image.PixelWidth, image.PixelHeight);
         return Task.CompletedTask;
     }
 }
