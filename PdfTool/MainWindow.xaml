@@ -44,11 +44,6 @@
         </Border>
         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch"
                     VerticalAlignment="Center" Margin="5">
-            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="Draw Full Image" FontSize="18"/>
-                <Border Width="5"/>
-                <local:Switch x:Name="BtnMaintainAspectRatio" Click="BtnMaintainAspectRatio_Click"/>
-            </StackPanel>-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
                     VerticalAlignment="Stretch" Margin="5">
                 <TextBlock FontSize="18">
