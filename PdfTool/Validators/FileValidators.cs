@@ -21,7 +21,7 @@ internal static class FileValidators {
         }
 
         foreach (var filePath in filePaths) {
-            var extension = System.IO.Path.GetExtension(filePath);
+            var extension = System.IO.Path.GetExtension(filePath).ToLower();
 
             if (!extensions.Contains(extension)) {
                 return new Result {
