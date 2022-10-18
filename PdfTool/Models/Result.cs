@@ -3,7 +3,6 @@
 /// <summary>
 /// A result container with message and status
 /// </summary>
-/// <typeparam name="T">Type of inner value</typeparam>
 internal readonly record struct Result {
     /// <summary>
     /// Whether the operation was successful

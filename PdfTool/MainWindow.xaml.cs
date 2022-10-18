@@ -17,9 +17,18 @@ public partial class MainWindow : Window {
     public MainWindow() {
         InitializeComponent();
         _settings = new AppSettings();
+        SyncronizeFromSettings();
         _imageConverter = new ImageToPdfConverter(_settings);
         _merger = new PdfMerger(_settings);
         _splitter = new PdfSplitter();
+    }
+
+    /// <summary>
+    /// Syncronizes UI with settings
+    /// </summary>
+    private void SyncronizeFromSettings() {
+        SliderImageConvertMode.Value = (int)_settings.ConversionMode;
+        SliderMode.Value = (int)_settings.Action;
     }
 
     /// <summary>
