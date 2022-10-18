@@ -4,19 +4,21 @@ This is a very simple portable application that allows the user to either conver
 
 ## Intro
 
-I have a business client which needed a simple program to merge pdf files and convert images to pdf's without sacrificing privacy as some or all the files are private documents of their clients. There were only two feasible solutions for this, either Adobe Acrobat Premium which is expensive and overkill if only those features are required, or other Open source alternatives, most of which either hide certain features behind paywall, have many options which makes them difficult to use, have a 2002 dated user interface, or all of the above.
+I have a business client which needed a simple program to merge or split pdf files and convert images to pdf's without sacrificing privacy as some or all the files are private documents of their clients. There were only two feasible solutions for this, either Adobe Acrobat Premium which is expensive and overkill if only those features are required, or other Open source alternatives, most of which either hide certain features behind paywall, have many options which makes them difficult to use, have a 2002 dated user interface, or all of the above.
 
 This led me to create this application, where safety, ease of use, portability and modern user interface are the foundations.
 
 ## Screenshots and usage
 
-![PdfTool Screenshot](https://user-images.githubusercontent.com/8972626/189625466-5d0bb940-e631-42f1-82f7-bf62a3a23506.png)
+![PdfTool-Screenshot](https://user-images.githubusercontent.com/8972626/196387677-c2a0c8e4-9266-468a-9af8-bac0f280e6a5.png)
 
 As you can see here, the application is very simple.
 
 ### Left side
 
-There's a big box to which you drag multiple pdf files (together) to merge them.
+There's a big box to which you drag multiple or single pdf file/s to execute a pdf action (either `Merge` or Split`).
+
+* You can choose which pdf action you desire by using the slider (this setting will be saved a loaded again when the application is relaunched).
 
 * You can select a desired merged file name, if this name is empty the created file will be name `merged.pdf`, if a file by the selected name already exists, the new file will append a `TimeStamp` to the name.
 
@@ -26,7 +28,7 @@ There's a big box to which you drag multiple pdf files (together) to merge them.
 
 There's a bix box to which you drag single or multiple pictures to convert all of them to .pdf's, each file will have a separate .pdf file of the same name, only the extension will be changed.
 
-* You can toggle whether to maintain aspect ratio or not, the default is on. If you maintain aspect ratio, the image will be scaled to fit inside the .pdf page (A4 size) and be centered. If you toggle this option off, the image will be stretched to fill a .pdf page (also A4 size)
+* You can use the slider to select the conversion mode you desire: either `Render full image` or `Fit image into page`; `Render full image` will change the page to the size of the image and render fully without compression, this will result in a large page size but will keep the original aspect ratio and have the highest quality. `Fit image into page` will create a page with the default size of the region (A4 or US letter) and then render the image into the page while maintaining aspect ratio, this means that the page will be the same orientation as the image, and if required will have white bars on the top and bottom or the sides to keep the image centered within the page.
 
 * If the image is wider than it is high, the page will automatically be rotated to landscape orientation.
 * Supported image formats are `.jpeg`, `.jpg`, `.png`, `.tif`, `.tiff`.
@@ -43,7 +45,11 @@ A: You can't choose the order, and the application doesn't actually order the fi
 
 Q: Will I add options?
 
-A: Probably not, this was made as a very simple solution to a specific client problem. If said client will require more features, maybe I will add them.
+A: Probably not, this was made as a very simple solution to a specific client problem. If said client will require more features, maybe I will add them. If you use the application frequently and have a suggestion, contact me or create an issue and I will investigate the option/feature.
+
+Q: I am encountering a bug, what can I do?
+
+A: Best thing is to open an issue, and add as much information as possible, I will investigate the issue and attempt to fix it. In case it happens with sensitive information and you don't want/can't upload it here, you can contact me privately through my email: dusrdev@gmail.com. you can then be sure the information will only be available to me, I will maintain your confidentiality and remove all the data you sent me when it is no longer required to fix the issue.
 
 Q: I am not running windows, are there versions for other platforms?
 
@@ -55,4 +61,6 @@ A: Yes, download the "self-contained" from [Releases](https://github.com/dusrdev
 
 ## Installation
 
-This application is made to be extremely portable thus it is compiled to be a single file executable, all you need is to download the latest version from [Releases](https://github.com/dusrdev/PdfTool/releases) and run it, if the client pc has no archive extractor, you can also download the .exe version
+This application is made to be extremely portable thus it is compiled to be a single file executable, all you need is to download the latest version from [Releases](https://github.com/dusrdev/PdfTool/releases) and run it, the lighest option is `framework-dependent` which depends on the computer having .NET 6 runtime installed. If it is not installed already, launching the app should prompt you to install it and take you the official microsoft download page. But, in most active and updated windows installation, you probably already have it installed as many other applications use it as well.
+
+* As of version 1.0.3 the direct executable download option is no longer available as the addition of the configuration file to save user settings requires the application to be packaged with 1 more file.
