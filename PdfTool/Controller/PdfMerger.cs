@@ -1,36 +1,30 @@
-﻿using PdfSharpCore.Pdf.IO;
+﻿using System.IO;
+using System.Text;
+
 using PdfSharpCore.Pdf;
+using PdfSharpCore.Pdf.IO;
 
 using PdfTool.Models;
-using System.IO;
-using System.Text;
 
 namespace PdfTool.Controller;
 
-internal sealed class PdfMerger {
-    private readonly AppSettings _settings;
-
-    public PdfMerger(AppSettings settings) {
-        _settings = settings;
+internal static class PdfMerger {
+    static PdfMerger() {
         var provider = CodePagesEncodingProvider.Instance;
         Encoding.RegisterProvider(provider);
     }
-
-    /// <summary>
-    /// Gets a valid filename for the output
-    /// </summary>
-    /// <param name="fileName"></param>
-    /// <returns></returns>
-    private string GetFileName(string fileName) => string.IsNullOrWhiteSpace(fileName) ? _settings.MergedFilename : fileName;
 
     /// <summary>
     /// Merges pdfs and saves them to the same
     /// </summary>
     /// <param name="filePaths"></param>
     /// <param name="requestedFileName"></param>
-    public async Task<Result> MergeDocumentsAsync(string[] filePaths, string requestedFileName) {
+    /// <param name="appSettings"></param>
+    public static async ValueTask<Result> MergeDocumentsAsync(string[] filePaths, string requestedFileName, AppSettings appSettings) {
         var directory = Path.GetDirectoryName(filePaths[0]);
-        var fileName = GetFileName(requestedFileName);
+        var fileName = string.IsNullOrWhiteSpace(requestedFileName)
+            ? appSettings.MergedFilename
+            : requestedFileName;
         var newFileName = await NewFileName(fileName, directory!);
         var filePath = Path.Combine(directory!, newFileName);
         var outputPath = Path.ChangeExtension(filePath, ".pdf");
@@ -46,19 +40,13 @@ internal sealed class PdfMerger {
             }
         }
 
-        if (document.PageCount == 0) {
-            return new Result {
-                Success = false,
-                Message = "Document processing failed!"
-            };
+        if (document.PageCount is 0) {
+            Result.Fail("No pages found in the document(s).");
         }
 
         document.Save(outputPath);
 
-        return new Result {
-            Success = true,
-            Message = "Merge successful."
-        };
+        return Result.Ok("Merge successful.");
     }
 
     /// <summary>
@@ -66,20 +54,10 @@ internal sealed class PdfMerger {
     /// </summary>
     /// <param name="fileName"></param>
     /// <param name="directory"></param>
-    /// <returns></returns>
     private static Task<string> NewFileName(string fileName, string directory) {
-        var files = Directory.GetFiles(directory);
+        var fileCount = Directory.GetFiles(directory, $"*{fileName}*").Length;
 
-        bool exists = false;
-
-        foreach (var file in files) {
-            if (file.Contains(fileName)) {
-                exists = true;
-                break;
-            }
-        }
-
-        if (!exists) {
+        if (fileCount is 0) {
             return Task.FromResult(fileName);
         }
 

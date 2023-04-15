@@ -1,13 +1,14 @@
-﻿using PdfSharpCore.Pdf.IO;
+﻿#pragma warning disable RCS1229
+
+using PdfSharpCore.Pdf.IO;
 using PdfSharpCore.Pdf;
-using PdfTool.Models;
 using System.Text;
 using System.IO;
 
 namespace PdfTool.Controller;
 
-internal sealed class PdfSplitter {
-    public PdfSplitter() {
+internal static class PdfSplitter {
+    static PdfSplitter() {
         var provider = CodePagesEncodingProvider.Instance;
         Encoding.RegisterProvider(provider);
     }
@@ -16,11 +17,9 @@ internal sealed class PdfSplitter {
     /// Merges pdfs and saves them to the same
     /// </summary>
     /// <param name="filePaths"></param>
-    public Task<Result> SplitPdfAsync(string[] filePaths) {
+    public static ValueTask<Result> SplitPdfAsync(string[] filePaths) {
         if (filePaths.Length > 1) {
-            return Task.FromResult(new Result {
-                Message = "Only one file can be split at a time."
-            });
+            return Result.Fail("Only one file can be split at a time.").AsValueTask();
         }
 
         var directory = Path.GetDirectoryName(filePaths[0]);
@@ -36,9 +35,6 @@ internal sealed class PdfSplitter {
             outputDocument.Save(outputFilename);
         }
 
-        return Task.FromResult(new Result {
-            Success = true,
-            Message = "Pdf splitted successfuly."
-        });
+        return Result.Ok("Pdf splitted successfully.").AsValueTask();
     }
 }
