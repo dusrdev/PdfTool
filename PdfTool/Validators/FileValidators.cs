@@ -1,6 +1,4 @@
-﻿using PdfTool.Models;
-
-namespace PdfTool.Validators;
+﻿namespace PdfTool.Validators;
 
 /// <summary>
 /// Validates files
@@ -13,27 +11,20 @@ internal static class FileValidators {
     /// <param name="extensions"></param>
     /// <returns></returns>
     public static Result AreFilesValid(ref string[] filePaths, HashSet<string> extensions) {
-        if (filePaths.Length == 0) {
-            return new Result {
-                Success = false,
-                Message = "No files selected."
-            };
+        if (filePaths.Length is 0) {
+            return Result.Fail("No files selected.");
         }
 
         foreach (var filePath in filePaths) {
             var extension = System.IO.Path.GetExtension(filePath).ToLower();
 
-            if (!extensions.Contains(extension)) {
-                return new Result {
-                    Success = false,
-                    Message = "At least one file has an unsupported extension."
-                };
+            if (extensions.Contains(extension)) {
+                continue;
             }
+
+            return Result.Fail("At least one file has an unsupported extension.");
         }
 
-        return new Result {
-            Success = true,
-            Message = "All files have valid extensions."
-        };
+        return Result.Ok("All files have valid extensions.");
     }
 }
