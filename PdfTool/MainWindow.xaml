@@ -5,61 +5,75 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PdfTool.Controls"
         mc:Ignorable="d"
-        Title="PdfTool © 2022 David Shnayder"
+        Title="PdfTool © 2023 David Shnayder"
         ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
-        Height="350" Width="600">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="1"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Border x:Name="PdfActionBorder" Grid.Row="0" Grid.Column="0" Style="{StaticResource DropBorder}" DragDrop.Drop="PdfActionBorder_Drop"
+        Height="450" Width="650">
+    <DockPanel LastChildFill="True">
+        <local:Status x:Name="Status" DockPanel.Dock="Bottom" Height="30" Margin="0, 5, 0, 0"/>
+        <Grid DockPanel.Dock="Top" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Border x:Name="MergeBorder" Grid.Row="0" Grid.Column="0" Style="{StaticResource DropBorder}" DragDrop.Drop="MergeBorder_Drop"
                 DragEnter="OnDragEnter" DragLeave="OnDragLeave">
-            <TextBlock x:Name="TxtPdfAction" Text="Merge Pdf's" Style="{StaticResource Title}"/>
-        </Border>
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                    VerticalAlignment="Center" Margin="5">
-                <TextBlock Text="Merge" FontSize="18"/>
-                <Slider x:Name="SliderMode" Value="0" MinWidth="75" Minimum="0" Maximum="1" TickFrequency="1"
-                        ValueChanged="SliderMode_ValueChanged" Margin="5, 0"/>
-                <TextBlock Text="Split" FontSize="18"/>
-            </StackPanel>
-            <DockPanel HorizontalAlignment="Stretch"
+                <TextBlock Style="{StaticResource Title}">
+                <Run>Merge</Run>
+                <LineBreak/>
+                <Run>Pdfs</Run>
+                </TextBlock>
+            </Border>
+            <Border x:Name="SplitBorder" Grid.Row="0" Grid.Column="2" Style="{StaticResource DropBorder}" DragDrop.Drop="SplitBorder_Drop"
+                DragEnter="OnDragEnter" DragLeave="OnDragLeave">
+                <TextBlock Style="{StaticResource Title}">
+                <Run>Split</Run>
+                <LineBreak/>
+                <Run>Pdf</Run>
+                </TextBlock>
+            </Border>
+            <Border x:Name="ConvertBorder" Grid.Row="0" Grid.Column="4" Style="{StaticResource DropBorder}" DragDrop.Drop="ConvertBorder_Drop"
+                DragEnter="OnDragEnter" DragLeave="OnDragLeave">
+                <TextBlock Style="{StaticResource Title}">
+                <Run>Convert</Run>
+                <LineBreak/>
+                <Run>Images</Run>
+                <LineBreak/>
+                <Run>To Pdfs</Run>
+                </TextBlock>
+            </Border>
+            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="5" HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                    <DockPanel HorizontalAlignment="Stretch"
                     VerticalAlignment="Center" Margin="5" LastChildFill="True">
-                <TextBlock Text="Merged filename: " FontSize="18" HorizontalAlignment="Center" DockPanel.Dock="Left"/>
-                <TextBox x:Name="TxtMergedFileName" DockPanel.Dock="Right"/>
-            </DockPanel>
-        </StackPanel>
-        <Border Grid.Column="1" Grid.RowSpan="2" Background="Black"/>
-        <Border x:Name="ConvertBorder" Grid.Row="0" Grid.Column="2" Style="{StaticResource DropBorder}" DragDrop.Drop="ConvertBorder_Drop"
-                DragEnter="OnDragEnter" DragLeave="OnDragLeave">
-            <TextBlock Text="Convert Images" Style="{StaticResource Title}"/>
-        </Border>
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch"
+                        <TextBlock Text="Merged filename: " HorizontalAlignment="Center" DockPanel.Dock="Left"/>
+                        <TextBox x:Name="TxtMergedFileName" DockPanel.Dock="Right"/>
+                    </DockPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"  HorizontalAlignment="Stretch"
                     VerticalAlignment="Center" Margin="5">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                    VerticalAlignment="Stretch" Margin="5">
-                <TextBlock FontSize="18">
+                    <DockPanel HorizontalAlignment="Stretch" LastChildFill="True" Margin="5">
+                        <TextBlock DockPanel.Dock="Left">
                     <Run>Render Full</Run>
                     <LineBreak/>
                     <Run>Image</Run>
-                </TextBlock>
-                <Slider x:Name="SliderImageConvertMode" Value="0" MinWidth="75" Minimum="0" Maximum="1" TickFrequency="1"
-                        ValueChanged="SliderImageConvertMode_ValueChanged" Margin="5, 0"/>
-                <TextBlock FontSize="18">
+                        </TextBlock>
+                        <TextBlock DockPanel.Dock="Right">
                     <Run>Fit Image</Run>
                     <LineBreak/>
                     <Run>Into Page</Run>
-                </TextBlock>
+                        </TextBlock>
+                        <Slider x:Name="SliderImageConvertMode" Value="0" Minimum="0" Maximum="1" TickFrequency="1"
+                        ValueChanged="SliderImageConvertMode_ValueChanged" Margin="5, 0"/>
+                    </DockPanel>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
-        <local:Status x:Name="Status" Grid.Row="2" Grid.ColumnSpan="3" Height="30" Margin="0, 5, 0, 0"/>
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>
