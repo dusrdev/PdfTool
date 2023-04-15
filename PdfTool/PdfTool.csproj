@@ -1,40 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\Images\appicon.ico</ApplicationIcon>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Authors>David Shnayder</Authors>
-    <Copyright>2022, David Shnayder</Copyright>
-    <Description>Simple tools that converts images to pdfs or merges multiple pdf files into one</Description>
-    <Version>1.0.3</Version>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <ApplicationIcon>Resources\Images\appicon.ico</ApplicationIcon>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Authors>David Shnayder</Authors>
+        <Copyright>David Shnayder</Copyright>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <Title>PdfTool</Title>
+        <Description>Tool for merging and splitting pdf files, and converting images to pdf files</Description>
+        <Version>1.2.0</Version>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="Resources\Images\appicon.ico" />
-  </ItemGroup>
+    <PropertyGroup>
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>false</SelfContained>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="PdfSharpCore" Version="1.3.40" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <Content Include="Resources\Images\appicon.ico" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="PdfSharpCore" Version="1.3.49" />
+        <PackageReference Include="Sharpify" Version="1.0.1" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\Settings.Designer.cs">
+            <DesignTimeSharedInput>True</DesignTimeSharedInput>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Settings.settings</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Properties\Settings.settings">
+            <Generator>SettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
 
 </Project>
