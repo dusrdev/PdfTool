@@ -12,8 +12,6 @@ internal sealed class AppSettings {
         }
     }
 
-    public string MergedFilename { get; set; } = "Merged";
-
     public AppSettings() {
         _conversionMode = (ImageConversionMode)Properties.Settings.Default[nameof(ImageConversionMode)];
     }
