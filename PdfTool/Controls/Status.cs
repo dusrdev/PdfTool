@@ -6,33 +6,32 @@ namespace PdfTool.Controls;
 
 public class Status : Border {
     private readonly TextBlock _textBlock;
-    public TimeSpan CollapseDelay { get; set; }
+    public static readonly TimeSpan CollapseDelay = TimeSpan.FromSeconds(5);
 
     public Status() {
         Collapse();
-        CollapseDelay = TimeSpan.FromSeconds(3);
         _textBlock = new TextBlock {
             FontWeight = FontWeights.SemiBold
         };
         Child = _textBlock;
     }
 
-    public void Collapse() => Visibility = Visibility.Collapsed;
+    private void Collapse() => Visibility = Visibility.Collapsed;
 
     public async Task DelayCollapse() {
         await Task.Delay(CollapseDelay);
         Collapse();
     }
 
-    public void Update(string status, bool isSuccess) {
+    public void Update(Result result) {
         if (Visibility is Visibility.Collapsed) {
             Visibility = Visibility.Visible;
         }
 
-        _textBlock.Text = status;
+        _textBlock.Text = result.Message;
 
-        Background = isSuccess switch {
-            true => Brushes.SpringGreen,
+        Background = result.IsOk switch {
+            true => Brushes.Lime,
             _ => Brushes.Crimson
         };
 
