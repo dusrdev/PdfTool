@@ -20,12 +20,12 @@ internal static class PdfMerger {
     /// <param name="filePaths"></param>
     /// <param name="requestedFileName"></param>
     /// <param name="appSettings"></param>
-    public static async ValueTask<Result> MergeDocumentsAsync(string[] filePaths, string requestedFileName, AppSettings appSettings) {
+    public static Result MergeDocuments(string[] filePaths, string requestedFileName) {
         var directory = Path.GetDirectoryName(filePaths[0]);
         var fileName = string.IsNullOrWhiteSpace(requestedFileName)
-            ? appSettings.MergedFilename
+            ? "Merged"
             : requestedFileName;
-        var newFileName = await NewFileName(fileName, directory!);
+        var newFileName = NewFileName(fileName, directory!);
         var filePath = Path.Combine(directory!, newFileName);
         var outputPath = Path.ChangeExtension(filePath, ".pdf");
 
@@ -54,14 +54,14 @@ internal static class PdfMerger {
     /// </summary>
     /// <param name="fileName"></param>
     /// <param name="directory"></param>
-    private static Task<string> NewFileName(string fileName, string directory) {
+    private static string NewFileName(string fileName, string directory) {
         var fileCount = Directory.GetFiles(directory, $"*{fileName}*").Length;
 
         if (fileCount is 0) {
-            return Task.FromResult(fileName);
+            return fileName;
         }
 
         var timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-        return Task.FromResult($"{fileName}-{timeStamp}");
+        return string.Concat(fileName, "-", timeStamp);
     }
 }

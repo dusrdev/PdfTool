@@ -5,8 +5,8 @@ using PdfSharpCore.Pdf;
 
 namespace PdfTool.Controller;
 
-public readonly struct ImageToPdfConvertAction : IAsyncAction<string> {
-    public Task InvokeAsync(string input) {
+public readonly struct ImageToPdfConvertAction : IAction<string> {
+    public void Invoke(string input) {
         using var document = new PdfDocument();
         document.Info.Title = Path.GetFileNameWithoutExtension(input);
 
@@ -26,8 +26,6 @@ public readonly struct ImageToPdfConvertAction : IAsyncAction<string> {
         if (document.PageCount > 0) {
             document.Save(resultPath);
         }
-
-        return Task.CompletedTask;
     }
 
     /// <summary>

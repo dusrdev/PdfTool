@@ -1,9 +1,8 @@
-﻿#pragma warning disable RCS1229
-
-using PdfSharpCore.Pdf.IO;
-using PdfSharpCore.Pdf;
+﻿using System.IO;
 using System.Text;
-using System.IO;
+
+using PdfSharpCore.Pdf;
+using PdfSharpCore.Pdf.IO;
 
 namespace PdfTool.Controller;
 
@@ -17,9 +16,9 @@ internal static class PdfSplitter {
     /// Merges pdfs and saves them to the same
     /// </summary>
     /// <param name="filePaths"></param>
-    public static ValueTask<Result> SplitPdfAsync(string[] filePaths) {
+    public static Result SplitPdf(string[] filePaths) {
         if (filePaths.Length > 1) {
-            return Result.Fail("Only one file can be split at a time.").AsValueTask();
+            return Result.Fail("Only one file can be split at a time.");
         }
 
         var directory = Path.GetDirectoryName(filePaths[0]);
@@ -35,6 +34,6 @@ internal static class PdfSplitter {
             outputDocument.Save(outputFilename);
         }
 
-        return Result.Ok("Pdf splitted successfully.").AsValueTask();
+        return Result.Ok("Pdf splitted successfully.");
     }
 }

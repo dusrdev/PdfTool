@@ -15,7 +15,7 @@ internal static class ImageToPdfConverter {
     /// Batch converts images to pdfs and saves them to the same directory as the first file
     /// </summary>
     /// <param name="filePaths"></param>
-    public static async ValueTask<Result> ConvertImagesAsync(string[] filePaths) {
+    public static Result ConvertImages(string[] filePaths) {
         // _selectedConverter = _settings.ConversionMode switch {
         //     ImageConversionMode.Full => DrawImageFull,
         //     _ => DrawImageFit
@@ -25,7 +25,7 @@ internal static class ImageToPdfConverter {
         // await tasks.ParallelForEachAsync(-1, async func => await func());
 
         var converter = new ImageToPdfConvertAction();
-        await filePaths.Concurrent().ForEachAsync(converter);
+        filePaths.Concurrent().ForEach(converter);
 
         return Result.Ok("Conversion successful.");
     }
