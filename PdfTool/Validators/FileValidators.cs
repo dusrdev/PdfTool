@@ -1,4 +1,6 @@
-﻿namespace PdfTool.Validators;
+﻿using System.IO;
+
+namespace PdfTool.Validators;
 
 /// <summary>
 /// Validates files
@@ -9,14 +11,15 @@ internal static class FileValidators {
     /// </summary>
     /// <param name="filePaths"></param>
     /// <param name="extensions"></param>
-    /// <returns></returns>
-    public static Result AreFilesValid(ref string[] filePaths, HashSet<string> extensions) {
+    public static Result AreFilesValid(ReadOnlyMemory<string> filePaths, HashSet<string> extensions) {
         if (filePaths.Length is 0) {
             return Result.Fail("No files selected.");
         }
 
-        foreach (var filePath in filePaths) {
-            var extension = System.IO.Path.GetExtension(filePath).ToLower();
+        int i = 0;
+
+        while (++i < filePaths.Length) {
+            var extension = Path.GetExtension(filePaths.Span[i]).ToLower();
 
             if (extensions.Contains(extension)) {
                 continue;
