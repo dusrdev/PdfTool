@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PdfTool.Controls"
         mc:Ignorable="d"
-        Title="PdfTool © 2023 David Shnayder"
+        Title="PdfTool © David Shnayder"
         ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
         Height="450" Width="650">
     <DockPanel LastChildFill="True">
+        <ProgressBar x:Name="ProgressBar" DockPanel.Dock="Bottom" Height="25"/>
         <local:Status x:Name="Status" DockPanel.Dock="Bottom" Height="30" Margin="0, 5, 0, 0"/>
         <Grid DockPanel.Dock="Top" Margin="5">
             <Grid.ColumnDefinitions>
@@ -22,7 +23,7 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Border x:Name="MergeBorder" Grid.Row="0" Grid.Column="0" Style="{StaticResource DropBorder}" DragDrop.Drop="MergeBorder_Drop"
+            <Border x:Name="MergeBorder" Grid.Row="0" Grid.Column="0" Style="{StaticResource DropBorder}" DragDrop.Drop="Border_Drop"
                 DragEnter="OnDragEnter" DragLeave="OnDragLeave">
                 <TextBlock Style="{StaticResource Title}">
                 <Run>Merge</Run>
@@ -30,7 +31,7 @@
                 <Run>Pdfs</Run>
                 </TextBlock>
             </Border>
-            <Border x:Name="SplitBorder" Grid.Row="0" Grid.Column="2" Style="{StaticResource DropBorder}" DragDrop.Drop="SplitBorder_Drop"
+            <Border x:Name="SplitBorder" Grid.Row="0" Grid.Column="2" Style="{StaticResource DropBorder}" DragDrop.Drop="Border_Drop"
                 DragEnter="OnDragEnter" DragLeave="OnDragLeave">
                 <TextBlock Style="{StaticResource Title}">
                 <Run>Split</Run>
@@ -38,7 +39,7 @@
                 <Run>Pdf</Run>
                 </TextBlock>
             </Border>
-            <Border x:Name="ConvertBorder" Grid.Row="0" Grid.Column="4" Style="{StaticResource DropBorder}" DragDrop.Drop="ConvertBorder_Drop"
+            <Border x:Name="ConvertBorder" Grid.Row="0" Grid.Column="4" Style="{StaticResource DropBorder}" DragDrop.Drop="Border_Drop"
                 DragEnter="OnDragEnter" DragLeave="OnDragLeave">
                 <TextBlock Style="{StaticResource Title}">
                 <Run>Convert</Run>

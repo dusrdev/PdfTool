@@ -12,6 +12,12 @@
                 <Setter Property="TextWrapping" Value="Wrap"/>
                 <Setter Property="TextAlignment" Value="Center"/>
             </Style>
+            <Style TargetType="ProgressBar">
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="IsIndeterminate" Value="False"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </Style>
             <Style x:Key="DropBorder" TargetType="Border">
                 <Setter Property="Background" Value="Lavender"/>
                 <Setter Property="BorderBrush" Value="SlateGray"/>
