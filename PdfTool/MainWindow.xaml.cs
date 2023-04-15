@@ -30,18 +30,17 @@ public partial class MainWindow : Window {
     /// <summary>
     /// Merges multiple files to one file
     /// </summary>
-    /// <param name="dataObject"></param>
-    private async Task MergePdfAction(IDataObject dataObject) {
-        string[] filePaths = (string[])dataObject.GetData(DataFormats.FileDrop);
-
-        var validation = FileValidators.AreFilesValid(ref filePaths, SupportedExtensions.Pdf);
+    /// <param name="files"></param>
+    private async ValueTask MergePdfAction(string[] files) {
+        var validation = FileValidators.AreFilesValid(files, SupportedExtensions.Pdf);
 
         if (validation.IsFail) {
             Status.Update(validation);
             return;
         }
 
-        var result = await PdfMerger.MergeDocumentsAsync(filePaths, TxtMergedFileName.Text, _settings);
+        var requestedFileName = TxtMergedFileName.Text;
+        var result = await Task.Run(() => PdfMerger.MergeDocuments(files, requestedFileName));
 
         Status.Update(result);
     }
@@ -49,18 +48,16 @@ public partial class MainWindow : Window {
     /// <summary>
     /// Splits pdf file into multiple files
     /// </summary>
-    /// <param name="dataObject"></param>
-    private async Task SplitPdfAction(IDataObject dataObject) {
-        string[] filePaths = (string[])dataObject.GetData(DataFormats.FileDrop);
-
-        var validation = FileValidators.AreFilesValid(ref filePaths, SupportedExtensions.Pdf);
+    /// <param name="files"></param>
+    private async ValueTask SplitPdfAction(string[] files) {
+        var validation = FileValidators.AreFilesValid(files, SupportedExtensions.Pdf);
 
         if (validation.IsFail) {
             Status.Update(validation);
             return;
         }
 
-        var result = await PdfSplitter.SplitPdfAsync(filePaths);
+        var result = await Task.Run(() => PdfSplitter.SplitPdf(files));
 
         Status.Update(result);
     }
@@ -68,35 +65,35 @@ public partial class MainWindow : Window {
     /// <summary>
     /// Converts images to pdfs
     /// </summary>
-    /// <param name="dataObject"></param>
-    private async Task ConvertImages(IDataObject dataObject) {
-        string[] filePaths = (string[])dataObject.GetData(DataFormats.FileDrop);
-
-        var validation = FileValidators.AreFilesValid(ref filePaths, SupportedExtensions.Images);
+    /// <param name="files"></param>
+    private async ValueTask ConvertImages(string[] files) {
+        var validation = FileValidators.AreFilesValid(files, SupportedExtensions.Images);
 
         if (validation.IsFail) {
             Status.Update(validation);
             return;
         }
 
-        var result = await ImageToPdfConverter.ConvertImagesAsync(filePaths);
+        var result = await Task.Run(() => ImageToPdfConverter.ConvertImages(files));
 
         Status.Update(result);
     }
 
-    private async void MergeBorder_Drop(object sender, DragEventArgs e) {
-        await MergePdfAction(e.Data);
-        OnDragLeave(sender, e);
-    }
-
-    private async void ConvertBorder_Drop(object sender, DragEventArgs e) {
-        await ConvertImages(e.Data);
-        OnDragLeave(sender, e);
-    }
-
-    private async void SplitBorder_Drop(object sender, DragEventArgs e) {
-        await SplitPdfAction(e.Data);
-        OnDragLeave(sender, e);
+    private async void Border_Drop(object sender, DragEventArgs e) {
+        if (sender is not Border border) {
+            return;
+        }
+        var staticColor = Constants.BorderConfigs[border.Name].StaticColor;
+        var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+        ProgressBar.Toggle(true, staticColor);
+        if (border == MergeBorder) {
+            await MergePdfAction(files);
+        } else if (border == SplitBorder) {
+            await SplitPdfAction(files);
+        } else if (border == ConvertBorder) {
+            await ConvertImages(files);
+        }
+        ProgressBar.Toggle(false, staticColor);
     }
 
     private void OnDragEnter(object sender, DragEventArgs e) {
