@@ -17,7 +17,8 @@ This is a very simple portable application that includes 3 tools:
 
 ## Screenshots and usage
 
-![PdfTool-Screenshot](placeholder)
+![PdfTool-Screenshot](https://user-images.githubusercontent.com/8972626/232326421-d7808597-fad2-4b22-a399-fab1ce6fe0dd.png)
+
 
 As you can see here, the application is very simple.
 
