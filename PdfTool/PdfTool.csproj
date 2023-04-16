@@ -18,6 +18,10 @@
     <PropertyGroup>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>false</SelfContained>
+        <PackageProjectUrl>https://github.com/dusrdev/PdfTool</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/dusrdev/PdfTool</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>Pdf;Tool;Portable</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,21 +31,6 @@
     <ItemGroup>
         <PackageReference Include="PdfSharpCore" Version="1.3.49" />
         <PackageReference Include="Sharpify" Version="1.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Properties\Settings.Designer.cs">
-            <DesignTimeSharedInput>True</DesignTimeSharedInput>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Settings.settings</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="Properties\Settings.settings">
-            <Generator>SettingsSingleFileGenerator</Generator>
-            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-        </None>
     </ItemGroup>
 
 </Project>
