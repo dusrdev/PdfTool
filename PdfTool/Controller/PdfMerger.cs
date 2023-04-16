@@ -4,8 +4,6 @@ using System.Text;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Pdf.IO;
 
-using PdfTool.Models;
-
 namespace PdfTool.Controller;
 
 internal static class PdfMerger {
