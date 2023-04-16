@@ -3,17 +3,13 @@ using System.Windows.Controls;
 
 using PdfTool.Controller;
 using PdfTool.Core;
-using PdfTool.Models;
 using PdfTool.Validators;
 
 namespace PdfTool;
 
 public partial class MainWindow : Window {
-    private readonly AppSettings _settings;
-
     public MainWindow() {
         InitializeComponent();
-        _settings = new AppSettings();
         Initialize();
     }
 
@@ -21,7 +17,6 @@ public partial class MainWindow : Window {
     /// Synchronizes UI with settings
     /// </summary>
     private void Initialize() {
-        SliderImageConvertMode.Value = (int)_settings.ConversionMode;
         MergeBorder.Background = Constants.BorderConfigs[nameof(MergeBorder)].StaticColor;
         SplitBorder.Background = Constants.BorderConfigs[nameof(SplitBorder)].StaticColor;
         ConvertBorder.Background = Constants.BorderConfigs[nameof(ConvertBorder)].StaticColor;
@@ -108,9 +103,5 @@ public partial class MainWindow : Window {
             return;
         }
         border.Background = Constants.BorderConfigs[border.Name].StaticColor;
-    }
-
-    private void SliderImageConvertMode_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-        _settings.ConversionMode = (ImageConversionMode)(int)SliderImageConvertMode.Value;
     }
 }
