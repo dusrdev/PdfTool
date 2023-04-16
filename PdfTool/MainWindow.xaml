@@ -1,80 +1,64 @@
 ﻿<Window x:Class="PdfTool.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PdfTool.Controls"
-        mc:Ignorable="d"
-        Title="PdfTool © David Shnayder"
-        ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
-        Height="450" Width="650">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:PdfTool.Controls"
+    mc:Ignorable="d"
+    Title="PdfTool © David Shnayder"
+    ResizeMode="CanResize" WindowStartupLocation="CenterScreen"
+    Height="350" Width="650">
     <DockPanel LastChildFill="True">
-        <ProgressBar x:Name="ProgressBar" DockPanel.Dock="Bottom" Height="25"/>
-        <local:Status x:Name="Status" DockPanel.Dock="Bottom" Height="30" Margin="0, 5, 0, 0"/>
+        <ProgressBar x:Name="ProgressBar" DockPanel.Dock="Bottom" Height="25" />
+        <local:Status x:Name="Status" DockPanel.Dock="Bottom" Height="30" Margin="0, 5, 0, 0" />
         <Grid DockPanel.Dock="Top" Margin="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="1"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="1"/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="1" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="1" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Border x:Name="MergeBorder" Grid.Row="0" Grid.Column="0" Style="{StaticResource DropBorder}" DragDrop.Drop="Border_Drop"
+            <Border x:Name="MergeBorder" Grid.Row="0" Grid.Column="0"
+                Style="{StaticResource DropBorder}" DragDrop.Drop="Border_Drop"
                 DragEnter="OnDragEnter" DragLeave="OnDragLeave">
                 <TextBlock Style="{StaticResource Title}">
-                <Run>Merge</Run>
-                <LineBreak/>
-                <Run>Pdfs</Run>
+                    <Run>Merge</Run>
+                    <LineBreak />
+                    <Run>Pdfs</Run>
                 </TextBlock>
             </Border>
-            <Border x:Name="SplitBorder" Grid.Row="0" Grid.Column="2" Style="{StaticResource DropBorder}" DragDrop.Drop="Border_Drop"
+            <Border x:Name="SplitBorder" Grid.Row="0" Grid.Column="2"
+                Style="{StaticResource DropBorder}" DragDrop.Drop="Border_Drop"
                 DragEnter="OnDragEnter" DragLeave="OnDragLeave">
                 <TextBlock Style="{StaticResource Title}">
-                <Run>Split</Run>
-                <LineBreak/>
-                <Run>Pdf</Run>
+                    <Run>Split</Run>
+                    <LineBreak />
+                    <Run>Pdf</Run>
                 </TextBlock>
             </Border>
-            <Border x:Name="ConvertBorder" Grid.Row="0" Grid.Column="4" Style="{StaticResource DropBorder}" DragDrop.Drop="Border_Drop"
+            <Border x:Name="ConvertBorder" Grid.Row="0" Grid.Column="4"
+                Style="{StaticResource DropBorder}" DragDrop.Drop="Border_Drop"
                 DragEnter="OnDragEnter" DragLeave="OnDragLeave">
                 <TextBlock Style="{StaticResource Title}">
-                <Run>Convert</Run>
-                <LineBreak/>
-                <Run>Images</Run>
-                <LineBreak/>
-                <Run>To Pdfs</Run>
+                    <Run>Convert</Run>
+                    <LineBreak />
+                    <Run>Images</Run>
+                    <LineBreak />
+                    <Run>To Pdfs</Run>
                 </TextBlock>
             </Border>
-            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="5" HorizontalAlignment="Stretch">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-                    <DockPanel HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center" Margin="5" LastChildFill="True">
-                        <TextBlock Text="Merged filename: " HorizontalAlignment="Center" DockPanel.Dock="Left"/>
-                        <TextBox x:Name="TxtMergedFileName" DockPanel.Dock="Right"/>
-                    </DockPanel>
-                </StackPanel>
-                <StackPanel Orientation="Vertical"  HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center" Margin="5">
-                    <DockPanel HorizontalAlignment="Stretch" LastChildFill="True" Margin="5">
-                        <TextBlock DockPanel.Dock="Left">
-                    <Run>Render Full</Run>
-                    <LineBreak/>
-                    <Run>Image</Run>
-                        </TextBlock>
-                        <TextBlock DockPanel.Dock="Right">
-                    <Run>Fit Image</Run>
-                    <LineBreak/>
-                    <Run>Into Page</Run>
-                        </TextBlock>
-                        <Slider x:Name="SliderImageConvertMode" Value="0" Minimum="0" Maximum="1" TickFrequency="1"
-                        ValueChanged="SliderImageConvertMode_ValueChanged" Margin="5, 0"/>
-                    </DockPanel>
-                </StackPanel>
-            </StackPanel>
+            <DockPanel HorizontalAlignment="Stretch"
+                VerticalAlignment="Center" Margin="5" Grid.Row="1" Grid.ColumnSpan="5"
+                LastChildFill="True">
+                <TextBlock Text="Merged filename: " HorizontalAlignment="Center"
+                    DockPanel.Dock="Left" />
+                <TextBox x:Name="TxtMergedFileName" DockPanel.Dock="Right" />
+            </DockPanel>
         </Grid>
     </DockPanel>
 </Window>
