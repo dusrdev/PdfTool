@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 
 namespace PdfTool.Validators;
 
@@ -11,23 +12,28 @@ internal static class FileValidators {
     /// </summary>
     /// <param name="filePaths"></param>
     /// <param name="extensions"></param>
-    public static Result AreFilesValid(ReadOnlyMemory<string> filePaths, HashSet<string> extensions) {
-        if (filePaths.Length is 0) {
+    public static Result AreFilesValid(ReadOnlyCollection<string> filePaths, HashSet<string> extensions) {
+        if (filePaths.Count is 0) {
             return Result.Fail("No files selected.");
         }
 
         int i = 0;
 
-        while (++i < filePaths.Length) {
-            var extension = Path.GetExtension(filePaths.Span[i]).ToLower();
+        while (i < filePaths.Count) {
+            var path = filePaths[i];
+            i++;
 
-            if (extensions.Contains(extension)) {
-                continue;
+            if (!File.Exists(path)) {
+                return Result.Fail($"File \"{path}\" does not exist.");
             }
 
-            return Result.Fail("At least one file has an unsupported extension.");
+            var extension = Path.GetExtension(path).ToLower();
+
+            if (!extensions.Contains(extension)) {
+                return Result.Fail($"File \"{path}\" has an unsupported extension.");
+            }
         }
 
-        return Result.Ok("All files have valid extensions.");
+        return Result.Ok("All files are valid.");
     }
 }

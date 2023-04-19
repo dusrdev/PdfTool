@@ -27,7 +27,7 @@ public partial class MainWindow : Window {
     /// </summary>
     /// <param name="files"></param>
     private async ValueTask MergePdfAction(string[] files) {
-        var validation = FileValidators.AreFilesValid(files, SupportedExtensions.Pdf);
+        var validation = FileValidators.AreFilesValid(files.AsReadOnly(), SupportedExtensions.Pdf);
 
         if (validation.IsFail) {
             Status.Update(validation);
@@ -35,7 +35,7 @@ public partial class MainWindow : Window {
         }
 
         var requestedFileName = TxtMergedFileName.Text;
-        var result = await Task.Run(() => PdfMerger.MergeDocuments(files, requestedFileName));
+        var result = await Task.Run(() => PdfMerger.MergeDocuments(files.AsReadOnly(), requestedFileName));
 
         Status.Update(result);
     }
@@ -45,14 +45,14 @@ public partial class MainWindow : Window {
     /// </summary>
     /// <param name="files"></param>
     private async ValueTask SplitPdfAction(string[] files) {
-        var validation = FileValidators.AreFilesValid(files, SupportedExtensions.Pdf);
+        var validation = FileValidators.AreFilesValid(files.AsReadOnly(), SupportedExtensions.Pdf);
 
         if (validation.IsFail) {
             Status.Update(validation);
             return;
         }
 
-        var result = await Task.Run(() => PdfSplitter.SplitPdf(files));
+        var result = await Task.Run(() => PdfSplitter.SplitPdf(files.AsReadOnly()));
 
         Status.Update(result);
     }
@@ -62,7 +62,7 @@ public partial class MainWindow : Window {
     /// </summary>
     /// <param name="files"></param>
     private async ValueTask ConvertImages(string[] files) {
-        var validation = FileValidators.AreFilesValid(files, SupportedExtensions.Images);
+        var validation = FileValidators.AreFilesValid(files.AsReadOnly(), SupportedExtensions.Images);
 
         if (validation.IsFail) {
             Status.Update(validation);

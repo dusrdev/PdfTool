@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 
 using PdfSharpCore.Pdf;
@@ -16,8 +17,8 @@ internal static class PdfSplitter {
     /// Merges pdfs and saves them to the same
     /// </summary>
     /// <param name="filePaths"></param>
-    public static Result SplitPdf(string[] filePaths) {
-        if (filePaths.Length > 1) {
+    public static Result SplitPdf(ReadOnlyCollection<string> filePaths) {
+        if (filePaths.Count > 1) {
             return Result.Fail("Only one file can be split at a time.");
         }
 

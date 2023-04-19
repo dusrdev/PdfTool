@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 
 using PdfSharpCore.Pdf;
@@ -17,8 +18,7 @@ internal static class PdfMerger {
     /// </summary>
     /// <param name="filePaths"></param>
     /// <param name="requestedFileName"></param>
-    /// <param name="appSettings"></param>
-    public static Result MergeDocuments(string[] filePaths, string requestedFileName) {
+    public static Result MergeDocuments(ReadOnlyCollection<string> filePaths, string requestedFileName) {
         var directory = Path.GetDirectoryName(filePaths[0]);
         var fileName = string.IsNullOrWhiteSpace(requestedFileName)
             ? "Merged"
