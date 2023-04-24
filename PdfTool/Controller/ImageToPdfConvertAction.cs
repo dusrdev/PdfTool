@@ -6,6 +6,17 @@ using PdfSharpCore.Pdf;
 namespace PdfTool.Controller;
 
 public readonly struct ImageToPdfConvertAction : IAction<string> {
+    private readonly ThreadSafe<double> _counter;
+    private static readonly IModifier<double> Adder = new Adder();
+    private readonly int _total;
+    private readonly IProgress<double> _progress;
+
+    public ImageToPdfConvertAction(ThreadSafe<double> counter, int total, IProgress<double> progress) {
+        _counter = counter;
+        _total = total;
+        _progress = progress;
+    }
+
     public void Invoke(string input) {
         using var document = new PdfDocument();
         document.Info.Title = Path.GetFileNameWithoutExtension(input);
@@ -26,6 +37,9 @@ public readonly struct ImageToPdfConvertAction : IAction<string> {
         if (document.PageCount > 0) {
             document.Save(resultPath);
         }
+
+        var progress = Adder.Modify(_counter.Value, 1d) * 100d / _total;
+        _progress.Report(progress);
     }
 
     /// <summary>
