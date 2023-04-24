@@ -69,9 +69,12 @@ public partial class MainWindow : Window {
             return;
         }
 
-        var result = await Task.Run(() => ImageToPdfConverter.ConvertImages(files));
+        ProgressBar.IsIndeterminate = false;
+        var progress = new Progress<double>(value => ProgressBar.Value = value);
+        var result = await Task.Run(() => ImageToPdfConverter.ConvertImages(files, progress));
 
         Status.Update(result);
+        ProgressBar.IsIndeterminate = true;
     }
 
     private async void Border_Drop(object sender, DragEventArgs e) {
